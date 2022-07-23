@@ -1,0 +1,67 @@
+<!-- <div class="form-outline mb-4 login-form">
+  <input
+    type="text"
+    [(ngModel)]="username"
+    id="form2Example1"
+    class="form-control"
+  />
+  <label class="form-label" for="form2Example1">Username</label>
+</div>
+
+<div class="form-outline mb-4">
+  <input
+    type="password"
+    [(ngModel)]="password"
+    id="form2Example2"
+    class="form-control"
+  />
+  <label class="form-label" for="form2Example2">Password</label>
+</div>
+
+<button
+  type="button"
+  (click)="handleLogin()"
+  class="btn btn-primary col-12 mb-4"
+>
+  Sign in
+</button> -->
+<div class="container">
+  <div class="d-flex all-container justify-content-center">
+    <div class="d-flex image-container justify-content-center">
+      <img class="logo-image" src="" />
+    </div>
+    <div class="form-container-1">
+      <mat-form-field>
+        <input
+          appearance="fill"
+          type="text"
+          matInput
+          placeholder="Username"
+          [(ngModel)]="username"
+          #title
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field>
+        <input
+          [type]="hide ? 'password' : 'text'"
+          matInput
+          placeholder="Password"
+          [(ngModel)]="password"
+          #title
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+        </button>
+      </mat-form-field>
+      <button class="login-button" mat-stroked-button (click)="handleLogin()">
+        Login
+      </button>
+    </div>
+  </div>
+</div>

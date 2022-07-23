@@ -1,0 +1,72 @@
+<mat-sidenav-container fullscreen>
+  <!-- <mat-sidenav #sidenav>
+    <mat-nav-list (click)="sidenav.close()">
+      <a mat-list-item routerLink="/" class="mat-menu-item">
+        <mat-icon>library_books</mat-icon>
+        <span>Courses</span>
+      </a>
+
+      <a mat-list-item routerLink="about" class="mat-menu-item">
+        <mat-icon>question_answer</mat-icon>
+        <span>About</span>
+      </a>
+
+      <a mat-list-item routerLink="drag-drop-example" class="mat-menu-item">
+        <mat-icon>drag_indicator</mat-icon>
+        <span>Drag and Drop</span>
+      </a>
+
+      <a mat-list-item routerLink="tree-demo" class="mat-menu-item">
+        <mat-icon>park</mat-icon>
+        <span>Tree Demo</span>
+      </a>
+
+      <a mat-list-item routerLink="virtual-scrolling" class="mat-menu-item">
+        <mat-icon>import_export</mat-icon>
+        <span>Virtual Scrolling</span>
+      </a>
+
+      <a mat-list-item class="mat-menu-item">
+        <mat-icon>person_add</mat-icon>
+        <span>Register</span>
+      </a>
+
+      <a mat-list-item class="mat-menu-item">
+        <mat-icon>account_circle</mat-icon>
+        <span>Login</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav> -->
+
+  <mat-toolbar>
+    <!-- <button mat-icon-button (click)="sidenav.open()">
+      <mat-icon>menu</mat-icon>
+    </button> -->
+
+    <span class="example-spacer"></span>
+
+    <a
+      mat-button
+      routerLink="/login"
+      class="mat-button"
+      *ngIf="!userLoggedIn"
+      matSuffix
+    >
+      Login
+    </a>
+    <a
+      mat-button
+      class="mat-button"
+      *ngIf="userLoggedIn"
+      (click)="logout()"
+      routerLink="/"
+      >Logout
+    </a>
+    <!-- <a *ngIf="userLoggedIn" routerLink="/"
+      ><img src="" class="rounded-circle menu-img" />
+    </a> -->
+  </mat-toolbar>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</mat-sidenav-container>
