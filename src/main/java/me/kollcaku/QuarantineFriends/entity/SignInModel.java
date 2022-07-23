@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+//test commit
 public class SignInModel {
     private String username;
     private String password;
