@@ -1,4 +1,4 @@
-import { Authority, Role, UserModel } from '../model/userModel';
+import { Authority, Role, UserModel, RequestModel } from '../model/userModel';
 import { EventEmitter, Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
@@ -8,6 +8,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable({
   providedIn: 'root',
 })
+
 export class UserService implements OnInit {
   user = new EventEmitter<UserModel>();
   userRole = new EventEmitter<Role>();
@@ -41,8 +42,16 @@ export class UserService implements OnInit {
   //   );
   // }
 
-  addUser(user: UserModel) {
-    return this.httpClient.post('http://localhost:8080/api/register', user);
+  addUser(user: UserModel, password: string) {
+    let tempUser: RegisterModel = new RegisterModel();
+    tempUser.user = user;
+    tempUser.password = password;
+    return this.httpClient.post('http://localhost:8080/api/register', tempUser);
+  }
+
+  sendRequest(request: RequestModel, id:number) {
+    console.log("inside service");
+    return this.httpClient.post(`http://localhost:8080/api/request/send/${id}`, request).subscribe();
   }
 
   deleteUser(id: number) {
@@ -90,4 +99,9 @@ export class UserService implements OnInit {
     localStorage.removeItem('token');
   }
 
+}
+
+class RegisterModel{
+  user: UserModel;
+  password: string;
 }

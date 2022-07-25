@@ -18,7 +18,8 @@ public class UserDTO {
     private String jobPosition;
     private UserRoleDTO role;
     private String username;
-    private String password;
+
+    private List<RequestDTO> requests;
 
     private String imageUrl;
 
@@ -33,7 +34,6 @@ public class UserDTO {
                 ", jobPosition='" + jobPosition + '\'' +
                 ", role=" + role +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }

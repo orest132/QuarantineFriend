@@ -47,6 +47,25 @@
 
     <a
       mat-button
+      routerLink="/register"
+      class="mat-button"
+      *ngIf="!userLoggedIn"
+      matSuffix
+    >
+      Register
+    </a>
+
+    <a
+      mat-button
+      class="mat-button"
+      *ngIf="userLoggedIn"
+      
+      routerLink="/requests"
+      >Requests
+    </a>
+
+    <a
+      mat-button
       routerLink="/login"
       class="mat-button"
       *ngIf="!userLoggedIn"
@@ -59,7 +78,7 @@
       class="mat-button"
       *ngIf="userLoggedIn"
       (click)="logout()"
-      routerLink="/"
+      routerLink="/login"
       >Logout
     </a>
     <!-- <a *ngIf="userLoggedIn" routerLink="/"

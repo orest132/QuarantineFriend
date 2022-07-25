@@ -1,5 +1,6 @@
 package me.kollcaku.QuarantineFriends.entity;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,6 +42,9 @@ public class UserEntity {
     private String username;
 
     private String imageUrl;
+
+    @OneToMany(cascade = { CascadeType.ALL})
+    private List<RequestEntity> requests = new java.util.ArrayList<>();
 
     @Override
     public String toString() {

@@ -23,3 +23,7 @@ export class UserModel {
     public name: string;
     public authority: string;
   }
+  export class RequestModel {
+    public id: number;
+    public from_user: UserModel;
+  }

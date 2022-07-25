@@ -48,13 +48,19 @@ import {
 } from './components/alert/alert.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { RegisterComponent } from './components/register/register.component';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { RequestsComponent } from './components/requests/requests.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MenuComponent,
-    AlertComponent
+    AlertComponent,
+    RegisterComponent,
+    UserListComponent,
+    RequestsComponent
   ],
   imports: [
     BrowserModule,

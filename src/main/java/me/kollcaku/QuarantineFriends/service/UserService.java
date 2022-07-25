@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,11 +67,11 @@ public class UserService {
     }
 
     public UserDTO register(String firstName, String lastName, String username, String email, String jobPosition, String password, UserRoleDTO role) throws UserNotFoundException, EmailExistException, UsernameExistException {
-        if (password == null){
-            password = generatedPassword();
-        }
-
         validateUsernameAndEmail(username, email);
+//        if (password == null){
+//            password = generatedPassword();
+//        }
+
         UserDTO user = new UserDTO();
         user.setUserId(generateUsedId());
 
@@ -85,13 +87,14 @@ public class UserService {
         user.setLastName(lastName);
         user.setUsername(username);
         user.setEmail(email);
-        user.setPassword(encodedPassword);
         System.out.println("New password: " + password);
 //        sendPassword(user, password);
         user.setJobPosition(jobPosition);
         user.setImageUrl("./assets/images/anonymous.png");
         user.setRole(userRole);
-        this.userRepository.save(mapToEntity(user));
+        UserEntity userEntity = mapToEntity(user);
+        userEntity.setPassword(encodedPassword);
+        this.userRepository.save(userEntity);
         return user;
     }
 
@@ -109,7 +112,18 @@ public class UserService {
                 .body(loginResponse);
     }
 
-    public UserDTO mapToDto(UserEntity userEntity){
+    public List<UserDTO> getUsers() {
+        List<UserDTO>userList = new ArrayList<>();
+
+        for (UserEntity u: this.userRepository.findAll()){
+            if (u.getRole().getId() != 2){
+                userList.add(mapToDto(u));
+            }
+        }
+        return userList;
+    }
+
+    public static UserDTO mapToDto(UserEntity userEntity){
 
         UserDTO userDTO = new UserDTO();
 
@@ -119,17 +133,19 @@ public class UserService {
             userDTO.setUsername(userEntity.getUsername());
             userDTO.setLastName(userEntity.getLastName());
             userDTO.setJobPosition(userEntity.getJobPosition());
-            userDTO.setRole(this.userRoleService.mapToDto(userEntity.getRole()));
+            userDTO.setRole(UserRoleService.mapToDto(userEntity.getRole()));
             userDTO.setEmail(userEntity.getEmail());
-            userDTO.setPassword(userEntity.getPassword());
             userDTO.setImageUrl(userEntity.getImageUrl());
+            if (userEntity.getRequests() != null) {
+                userDTO.setRequests(userEntity.getRequests().stream().map(RequestService::mapToDto).collect(Collectors.toList()));
+            }
         }
 
 
         return userDTO;
     }
 
-    public UserEntity mapToEntity(UserDTO userDTO){
+    public static UserEntity mapToEntity(UserDTO userDTO){
         UserEntity userEntity = new UserEntity();
         if (userDTO != null){
             userEntity.setUserId(userDTO.getUserId());
@@ -138,10 +154,12 @@ public class UserService {
             userEntity.setUsername(userDTO.getUsername());
             userEntity.setLastName(userDTO.getLastName());
             userEntity.setJobPosition(userDTO.getJobPosition());
-            userEntity.setRole(this.userRoleService.mapToEntity(userDTO.getRole()));
+            userEntity.setRole(UserRoleService.mapToEntity(userDTO.getRole()));
             userEntity.setEmail(userDTO.getEmail());
-            userEntity.setPassword(userDTO.getPassword());
             userEntity.setImageUrl(userDTO.getImageUrl());
+            if (userDTO.getRequests() != null) {
+                userEntity.setRequests(userDTO.getRequests().stream().map(RequestService::mapToEntity).collect(Collectors.toList()));
+            }
         }
 
         return userEntity;

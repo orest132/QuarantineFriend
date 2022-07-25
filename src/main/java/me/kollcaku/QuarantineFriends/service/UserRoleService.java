@@ -26,7 +26,7 @@ public class UserRoleService{
         return mapToDto(this.userRoleRepository.findById(id).get());
     }
 
-    public UserRoleEntity mapToEntity(UserRoleDTO userRoleDTO){
+    public static UserRoleEntity mapToEntity(UserRoleDTO userRoleDTO){
         UserRoleEntity userRole = new UserRoleEntity();
         if(userRoleDTO != null) {
             userRole.setId(userRoleDTO.getId());
@@ -35,7 +35,7 @@ public class UserRoleService{
         return userRole;
     }
 
-    public UserRoleDTO mapToDto(UserRoleEntity userRoleEntity){
+    public static UserRoleDTO mapToDto(UserRoleEntity userRoleEntity){
         UserRoleDTO userRoleDTO = new UserRoleDTO();
         if(userRoleEntity != null) {
             userRoleDTO.setId(userRoleEntity.getId());
