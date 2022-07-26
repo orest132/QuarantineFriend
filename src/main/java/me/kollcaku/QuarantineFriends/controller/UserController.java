@@ -1,6 +1,7 @@
 package me.kollcaku.QuarantineFriends.controller;
 
 import me.kollcaku.QuarantineFriends.dto.UserDTO;
+import me.kollcaku.QuarantineFriends.entity.HobbyEntity;
 import me.kollcaku.QuarantineFriends.entity.RegisterModel;
 import me.kollcaku.QuarantineFriends.entity.SignInModel;
 import me.kollcaku.QuarantineFriends.exception.EmailExistException;
@@ -31,7 +32,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@RequestBody RegisterModel registerModel) throws EmailExistException, UserNotFoundException, UsernameExistException {
-        UserDTO user = userService.register(registerModel.getUser().getFirstName(), registerModel.getUser().getLastName(), registerModel.getUser().getUsername(), registerModel.getUser().getEmail(), registerModel.getUser().getJobPosition(), registerModel.getPassword(),registerModel.getUser().getRole());
+        UserDTO user = userService.register(registerModel.getUser().getFirstName(), registerModel.getUser().getLastName(), registerModel.getUser().getUsername(), registerModel.getUser().getEmail(), registerModel.getUser().getJobPosition(), registerModel.getPassword(),registerModel.getUser().getRole(),registerModel.getUser().getHobbies());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -44,5 +45,20 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getUsers(){
         List<UserDTO> users = this.userService.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @PostMapping("/hobby")
+    public HobbyEntity newHobby(@RequestBody HobbyEntity hobby){
+        return this.userService.newHobby(hobby);
+    }
+
+    @PostMapping("/hobby/user/{userId}")
+    public HobbyEntity newHobbyByUserId(@RequestBody HobbyEntity hobby, @PathVariable("userId") Long id){
+        return this.userService.newHobbyByUserId(hobby,id);
+    }
+
+    @GetMapping("/hobbies")
+    public List<HobbyEntity> getAllHobbies(){
+        return this.userService.getAllHobbies();
     }
 }

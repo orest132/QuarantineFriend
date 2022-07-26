@@ -43,8 +43,8 @@ public class UserEntity {
 
     private String imageUrl;
 
-    @OneToMany(cascade = { CascadeType.ALL})
-    private List<RequestEntity> requests = new java.util.ArrayList<>();
+    @ManyToMany
+    private List<HobbyEntity> hobbies;
 
     @Override
     public String toString() {

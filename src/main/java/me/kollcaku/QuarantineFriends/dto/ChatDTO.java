@@ -4,11 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class RequestDTO {
+public class ChatDTO {
     private Long id;
-    private UserDTO from_user;
-    private UserDTO to_user;
+    private UserDTO user1;
+    private UserDTO user2;
+    private List<MessageDTO> messages;
 }

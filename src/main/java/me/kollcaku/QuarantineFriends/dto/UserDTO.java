@@ -3,6 +3,7 @@ package me.kollcaku.QuarantineFriends.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import me.kollcaku.QuarantineFriends.entity.HobbyEntity;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class UserDTO {
     private String jobPosition;
     private UserRoleDTO role;
     private String username;
+
+    private List<HobbyEntity> hobbies;
 
     private List<RequestDTO> requests;
 

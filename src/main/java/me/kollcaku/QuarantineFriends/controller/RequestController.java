@@ -22,10 +22,10 @@ public class RequestController {
         this.requestService = requestService;
     }
 
-    @PostMapping("/request/send/{id}")
-    public void sendRequest(@RequestBody RequestDTO request, @PathVariable("id") Long id){
+    @PostMapping("/request/send")
+    public void sendRequest(@RequestBody RequestDTO request){
         System.out.println(request.getFrom_user().toString());
-        this.requestService.sendRequest(request, id);
+        this.requestService.sendRequest(request);
     }
 
 //    @GetMapping("/kot")
@@ -35,7 +35,6 @@ public class RequestController {
 
     @GetMapping("/request/all/{userId}")
     public List<RequestDTO> getAllRequests(@PathVariable("userId") Long id){
-        System.out.println("in get");
         return this.requestService.getAllRequests(id);
     }
 

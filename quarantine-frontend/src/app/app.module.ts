@@ -51,6 +51,8 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { RegisterComponent } from './components/register/register.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { RequestsComponent } from './components/requests/requests.component';
+import { ChatListComponent } from './components/chat-list/chat-list.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { RequestsComponent } from './components/requests/requests.component';
     AlertComponent,
     RegisterComponent,
     UserListComponent,
-    RequestsComponent
+    RequestsComponent,
+    ChatListComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,

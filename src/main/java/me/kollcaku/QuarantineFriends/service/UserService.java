@@ -3,11 +3,13 @@ package me.kollcaku.QuarantineFriends.service;
 import me.kollcaku.QuarantineFriends.configuration.JwtUtils;
 import me.kollcaku.QuarantineFriends.dto.UserDTO;
 import me.kollcaku.QuarantineFriends.dto.UserRoleDTO;
+import me.kollcaku.QuarantineFriends.entity.HobbyEntity;
 import me.kollcaku.QuarantineFriends.entity.SignInModel;
 import me.kollcaku.QuarantineFriends.entity.UserEntity;
 import me.kollcaku.QuarantineFriends.exception.EmailExistException;
 import me.kollcaku.QuarantineFriends.exception.UserNotFoundException;
 import me.kollcaku.QuarantineFriends.exception.UsernameExistException;
+import me.kollcaku.QuarantineFriends.repository.HobbyRepository;
 import me.kollcaku.QuarantineFriends.repository.UserRepository;
 import me.kollcaku.QuarantineFriends.utility.LoginResponse;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +24,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -31,18 +32,21 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final HobbyRepository hobbyRepository;
+
     private final UserRoleService userRoleService;
 
     AuthenticationManager authenticationManager;
 
     JwtUtils jwtUtils;
 
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleService userRoleService, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleService userRoleService, AuthenticationManager authenticationManager, JwtUtils jwtUtils, HobbyRepository hobbyRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
+        this.hobbyRepository = hobbyRepository;
     }
 
     private String generatedPassword() {
@@ -66,7 +70,7 @@ public class UserService {
         return passwordEncoder.encode(password);
     }
 
-    public UserDTO register(String firstName, String lastName, String username, String email, String jobPosition, String password, UserRoleDTO role) throws UserNotFoundException, EmailExistException, UsernameExistException {
+    public UserDTO register(String firstName, String lastName, String username, String email, String jobPosition, String password, UserRoleDTO role, List<HobbyEntity> hobbies) throws UserNotFoundException, EmailExistException, UsernameExistException {
         validateUsernameAndEmail(username, email);
 //        if (password == null){
 //            password = generatedPassword();
@@ -92,8 +96,13 @@ public class UserService {
         user.setJobPosition(jobPosition);
         user.setImageUrl("./assets/images/anonymous.png");
         user.setRole(userRole);
+
         UserEntity userEntity = mapToEntity(user);
+
         userEntity.setPassword(encodedPassword);
+        userEntity.setHobbies(null);
+        userEntity = this.userRepository.save(userEntity);
+        userEntity.setHobbies(hobbies);
         this.userRepository.save(userEntity);
         return user;
     }
@@ -136,9 +145,9 @@ public class UserService {
             userDTO.setRole(UserRoleService.mapToDto(userEntity.getRole()));
             userDTO.setEmail(userEntity.getEmail());
             userDTO.setImageUrl(userEntity.getImageUrl());
-            if (userEntity.getRequests() != null) {
-                userDTO.setRequests(userEntity.getRequests().stream().map(RequestService::mapToDto).collect(Collectors.toList()));
-            }
+//            if (userEntity.getRequests() != null) {
+//                userDTO.setRequests(userEntity.getRequests().stream().map(RequestService::mapToDto).collect(Collectors.toList()));
+//            }
         }
 
 
@@ -157,11 +166,26 @@ public class UserService {
             userEntity.setRole(UserRoleService.mapToEntity(userDTO.getRole()));
             userEntity.setEmail(userDTO.getEmail());
             userEntity.setImageUrl(userDTO.getImageUrl());
-            if (userDTO.getRequests() != null) {
-                userEntity.setRequests(userDTO.getRequests().stream().map(RequestService::mapToEntity).collect(Collectors.toList()));
-            }
+//            if (userDTO.getRequests() != null) {
+//                userEntity.setRequests(userDTO.getRequests().stream().map(RequestService::mapToEntity).collect(Collectors.toList()));
+//            }
         }
 
         return userEntity;
+    }
+
+    public HobbyEntity newHobby(HobbyEntity hobby) {
+        return this.hobbyRepository.save(hobby);
+    }
+
+    public HobbyEntity newHobbyByUserId(HobbyEntity hobby, Long id) {
+        UserEntity userEntity = userRepository.findById(id).get();
+        userEntity.getHobbies().add(hobby);
+        userRepository.save(userEntity);
+        return hobbyRepository.getHobbieByString(hobby.getHobby());
+    }
+
+    public List<HobbyEntity> getAllHobbies() {
+        return this.hobbyRepository.findAll();
     }
 }

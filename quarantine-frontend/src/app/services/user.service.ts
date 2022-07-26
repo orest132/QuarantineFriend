@@ -1,4 +1,4 @@
-import { Authority, Role, UserModel, RequestModel } from '../model/userModel';
+import { Authority, Role, UserModel, RequestModel, Hobby } from '../model/userModel';
 import { EventEmitter, Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
@@ -42,6 +42,18 @@ export class UserService implements OnInit {
   //   );
   // }
 
+  addHobbyByUserId(hobbie: Hobby, id: number){
+    return this.httpClient.post(`http://localhost:8080/api/hobby/user/${id}`, hobbie);
+  }
+
+  addHobby(hobbie: Hobby){
+    return this.httpClient.post<Hobby>(`http://localhost:8080/api/hobby`, hobbie);
+  }
+
+  getHobbies(){
+    return this.httpClient.get<Hobby[]>(`http://localhost:8080/api/hobbies`);
+  }
+
   addUser(user: UserModel, password: string) {
     let tempUser: RegisterModel = new RegisterModel();
     tempUser.user = user;
@@ -49,9 +61,9 @@ export class UserService implements OnInit {
     return this.httpClient.post('http://localhost:8080/api/register', tempUser);
   }
 
-  sendRequest(request: RequestModel, id:number) {
+  sendRequest(request: RequestModel) {
     console.log("inside service");
-    return this.httpClient.post(`http://localhost:8080/api/request/send/${id}`, request).subscribe();
+    return this.httpClient.post(`http://localhost:8080/api/request/send`, request).subscribe();
   }
 
   deleteUser(id: number) {

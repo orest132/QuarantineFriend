@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RequestDTO {
+public class MessageDTO {
     private Long id;
-    private UserDTO from_user;
-    private UserDTO to_user;
+    private String message;
+    private UserDTO user;
 }
