@@ -7,7 +7,7 @@ export class UserModel {
       public firstName: string,
       public lastName: string,
       public email: string,
-      public jobPosition: string,
+      public age: number,
       public username: string,
       public hobbies: Hobby[]
     ) {}

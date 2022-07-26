@@ -43,6 +43,14 @@
       <mat-icon>menu</mat-icon>
     </button> -->
 
+    <a
+      mat-button
+      *ngIf="userLoggedIn"
+      routerLink="/users"
+      class="mat-button"
+      ><mat-icon>person_outline</mat-icon>Suggestions
+    </a>
+
     <span class="example-spacer"></span>
 
     <a

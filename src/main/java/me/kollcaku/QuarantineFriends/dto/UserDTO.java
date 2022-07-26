@@ -16,7 +16,7 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private String jobPosition;
+    private Long age;
     private UserRoleDTO role;
     private String username;
 
@@ -34,7 +34,7 @@ public class UserDTO {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", jobPosition='" + jobPosition + '\'' +
+                ", jobPosition='" + age + '\'' +
                 ", role=" + role +
                 ", username='" + username + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +

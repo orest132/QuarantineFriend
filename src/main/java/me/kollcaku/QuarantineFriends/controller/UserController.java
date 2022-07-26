@@ -32,7 +32,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@RequestBody RegisterModel registerModel) throws EmailExistException, UserNotFoundException, UsernameExistException {
-        UserDTO user = userService.register(registerModel.getUser().getFirstName(), registerModel.getUser().getLastName(), registerModel.getUser().getUsername(), registerModel.getUser().getEmail(), registerModel.getUser().getJobPosition(), registerModel.getPassword(),registerModel.getUser().getRole(),registerModel.getUser().getHobbies());
+        UserDTO user = userService.register(registerModel.getUser().getFirstName(), registerModel.getUser().getLastName(), registerModel.getUser().getUsername(), registerModel.getUser().getEmail(), registerModel.getUser().getAge(), registerModel.getPassword(),registerModel.getUser().getRole(),registerModel.getUser().getHobbies());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -44,6 +44,12 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getUsers(){
         List<UserDTO> users = this.userService.getUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/sorted/{userId}/{thisMany}")
+    public ResponseEntity<List<UserDTO>> getUsersSorted(@PathVariable("userId") Long id, @PathVariable("thisMany") int usersToReturn){
+        List<UserDTO> users = this.userService.getUsersSorted(id, usersToReturn);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 

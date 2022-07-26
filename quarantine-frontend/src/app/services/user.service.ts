@@ -29,6 +29,10 @@ export class UserService implements OnInit {
     // this.userLoggedIn.next(JSON.parse(localStorage.getItem('user')));
   }
 
+  getUsersSorted(id:number, numberOfUsers: number){
+    return this.httpClient.get<UserModel[]>(`http://localhost:8080/api/users/sorted/${id}/${numberOfUsers}`);
+  }
+
   getUsers(): Observable<UserModel[]> {
     return this.httpClient.get<UserModel[]>(this.userEndPoint);
   }

@@ -22,8 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -36,17 +35,20 @@ public class UserService {
 
     private final UserRoleService userRoleService;
 
+    private final ChatService chatService;
+
     AuthenticationManager authenticationManager;
 
     JwtUtils jwtUtils;
 
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleService userRoleService, AuthenticationManager authenticationManager, JwtUtils jwtUtils, HobbyRepository hobbyRepository) {
+    public UserService(ChatService chatService,PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleService userRoleService, AuthenticationManager authenticationManager, JwtUtils jwtUtils, HobbyRepository hobbyRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.hobbyRepository = hobbyRepository;
+        this.chatService = chatService;
     }
 
     private String generatedPassword() {
@@ -70,11 +72,12 @@ public class UserService {
         return passwordEncoder.encode(password);
     }
 
-    public UserDTO register(String firstName, String lastName, String username, String email, String jobPosition, String password, UserRoleDTO role, List<HobbyEntity> hobbies) throws UserNotFoundException, EmailExistException, UsernameExistException {
+    public UserDTO register(String firstName, String lastName, String username, String email, Long age, String password, UserRoleDTO role, List<HobbyEntity> hobbies) throws UserNotFoundException, EmailExistException, UsernameExistException {
         validateUsernameAndEmail(username, email);
 //        if (password == null){
 //            password = generatedPassword();
 //        }
+        System.out.println(age);
 
         UserDTO user = new UserDTO();
         user.setUserId(generateUsedId());
@@ -93,11 +96,12 @@ public class UserService {
         user.setEmail(email);
         System.out.println("New password: " + password);
 //        sendPassword(user, password);
-        user.setJobPosition(jobPosition);
+        user.setAge(age);
         user.setImageUrl("./assets/images/anonymous.png");
         user.setRole(userRole);
 
         UserEntity userEntity = mapToEntity(user);
+        System.out.println(age);
 
         userEntity.setPassword(encodedPassword);
         userEntity.setHobbies(null);
@@ -141,7 +145,7 @@ public class UserService {
             userDTO.setFirstName(userEntity.getFirstName());
             userDTO.setUsername(userEntity.getUsername());
             userDTO.setLastName(userEntity.getLastName());
-            userDTO.setJobPosition(userEntity.getJobPosition());
+            userDTO.setAge(userEntity.getAge());
             userDTO.setRole(UserRoleService.mapToDto(userEntity.getRole()));
             userDTO.setEmail(userEntity.getEmail());
             userDTO.setImageUrl(userEntity.getImageUrl());
@@ -162,7 +166,7 @@ public class UserService {
             userEntity.setFirstName(userDTO.getFirstName());
             userEntity.setUsername(userDTO.getUsername());
             userEntity.setLastName(userDTO.getLastName());
-            userEntity.setJobPosition(userDTO.getJobPosition());
+            userEntity.setAge(userDTO.getAge());
             userEntity.setRole(UserRoleService.mapToEntity(userDTO.getRole()));
             userEntity.setEmail(userDTO.getEmail());
             userEntity.setImageUrl(userDTO.getImageUrl());
@@ -187,5 +191,73 @@ public class UserService {
 
     public List<HobbyEntity> getAllHobbies() {
         return this.hobbyRepository.findAll();
+    }
+
+    public int calculateTheOthersPoints(UserEntity theUser, UserEntity otherUser){
+
+        int points; int total;
+        if(theUser.getAge()==otherUser.getAge()){
+            points=5;
+            total=5;
+        }
+        else {
+            points = 0;
+            total = 5;
+        }
+        for(HobbyEntity hobby : theUser.getHobbies()){
+            total+=2;
+            for(HobbyEntity hobbyOther : otherUser.getHobbies()){
+                if(hobby.getHobby()==hobbyOther.getHobby())
+                    points+=2;
+            }
+        }
+        return points;
+    }
+
+    public static HashMap<UserEntity, Integer> sortByValue(HashMap<UserEntity, Integer> hm) {
+        // Create a list from elements of HashMap
+        List<Map.Entry<UserEntity, Integer>> list =
+                new LinkedList<Map.Entry<UserEntity, Integer>>(hm.entrySet());
+
+        // Sort the list
+        Collections.sort(list, new Comparator<Map.Entry<UserEntity, Integer>>() {
+            public int compare(Map.Entry<UserEntity, Integer> o1,
+                               Map.Entry<UserEntity, Integer> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+
+        // put data from sorted list to hashmap
+        HashMap<UserEntity, Integer> temp = new LinkedHashMap<UserEntity, Integer>();
+        for (Map.Entry<UserEntity, Integer> aa : list) {
+            temp.put(aa.getKey(), aa.getValue());
+        }
+        return temp;
+    }
+
+        public List<UserDTO> getUsersSorted(Long id, int usersToReturn) {
+        UserEntity theUser = this.userRepository.findById(id).get();
+        UserEntity admin = this.userRepository.findUserByUsername("admin");
+        List<UserEntity> theOtherUsers = this.userRepository.findAll();
+
+        HashMap<UserEntity, Integer> userScores = new HashMap<UserEntity, Integer>();
+
+        theOtherUsers.forEach(otherUser->{
+            if(theUser.getId()!=otherUser.getId()&&otherUser.getId()!=admin.getId()&&!this.chatService.chatExist(theUser.getId(),otherUser.getId()))
+                userScores.put(otherUser,this.calculateTheOthersPoints(theUser,otherUser));
+        });
+
+        Map<UserEntity, Integer> hm1 = sortByValue(userScores);
+        List<UserDTO> sortedUsers = new ArrayList<>();
+
+        for (Map.Entry<UserEntity, Integer> en : hm1.entrySet()) {
+            sortedUsers.add(mapToDto(en.getKey()));
+            System.out.println("Key = " + en.getKey().getUsername() +
+                    ", Value = " + en.getValue());
+        }
+        if(sortedUsers.size()<usersToReturn)
+            return sortedUsers;
+        else
+            return sortedUsers.subList(0,usersToReturn);
     }
 }

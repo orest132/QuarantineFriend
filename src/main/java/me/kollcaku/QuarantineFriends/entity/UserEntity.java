@@ -32,8 +32,9 @@ public class UserEntity {
     @Column(name = "email")
     @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email")
     private String email;
-    @Column(name = "job_position")
-    private String jobPosition;
+
+    @Column(name = "age")
+    private Long age;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -54,7 +55,7 @@ public class UserEntity {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", jobPosition='" + jobPosition + '\'' +
+                ", jobPosition='" + age + '\'' +
                 ", role=" + role +
                 ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
