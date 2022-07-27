@@ -2,6 +2,7 @@ export class UserModel {
     public id: number;
     public role: Role;
     public imageUrl: string;
+    public isBanned: boolean;
   
     constructor(
       public firstName: string,

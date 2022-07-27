@@ -26,6 +26,8 @@ public class UserDTO {
 
     private String imageUrl;
 
+    private boolean isBanned = false;
+
     @Override
     public String toString() {
         return "UserDTO{" +

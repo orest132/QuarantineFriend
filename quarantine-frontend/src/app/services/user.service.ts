@@ -41,6 +41,10 @@ export class UserService implements OnInit {
     return this.httpClient.delete(`http://localhost:8080/api/report/delete/${id}`);
   }
 
+  banReportee(id:number){
+    return this.httpClient.put(`http://localhost:8080/api/user/ban/${id}`,"");
+  }
+
   getUsersSorted(id:number, numberOfUsers: number){
     return this.httpClient.get<UserModel[]>(`http://localhost:8080/api/users/sorted/${id}/${numberOfUsers}`);
   }

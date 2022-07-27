@@ -47,6 +47,8 @@ public class UserEntity {
     @ManyToMany(cascade = {CascadeType.ALL})
     private List<HobbyEntity> hobbies;
 
+    private boolean isBanned = false;
+
     @Override
     public String toString() {
         return "User{" +

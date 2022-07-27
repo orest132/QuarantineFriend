@@ -44,6 +44,7 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getUsers(){
         List<UserDTO> users = this.userService.getUsers();
+        System.out.println(users.get(0).isBanned());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
@@ -71,6 +72,11 @@ public class UserController {
     @DeleteMapping("/user/delete/{userId}")
     public void deleteUserById(@PathVariable("userId") Long id){
         this.userService.deleteUserById(id);
+    }
+
+    @PutMapping("/user/ban/{userId}")
+    public void banUser(@PathVariable("userId") Long id){
+        this.userService.banUser(id);
     }
 
     @PostMapping("/hobby")

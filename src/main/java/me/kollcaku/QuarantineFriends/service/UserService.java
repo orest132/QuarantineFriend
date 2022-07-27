@@ -150,7 +150,9 @@ public class UserService {
         UserDTO userDTO = new UserDTO();
 
         if (userEntity != null){
+            userDTO.setUserId(userEntity.getUserId());
             userDTO.setId(userEntity.getId());
+            userDTO.setBanned(userEntity.isBanned());
             userDTO.setFirstName(userEntity.getFirstName());
             userDTO.setUsername(userEntity.getUsername());
             userDTO.setLastName(userEntity.getLastName());
@@ -172,6 +174,7 @@ public class UserService {
         if (userDTO != null){
             userEntity.setUserId(userDTO.getUserId());
             userEntity.setId(userDTO.getId());
+            userEntity.setBanned(userDTO.isBanned());
             userEntity.setFirstName(userDTO.getFirstName());
             userEntity.setUsername(userDTO.getUsername());
             userEntity.setLastName(userDTO.getLastName());
@@ -312,5 +315,18 @@ public class UserService {
         sendPassword(user, password);
         this.userRepository.save(user);
 
+    }
+
+    public void banUser(Long id) {
+
+        UserEntity userEntity = this.userRepository.findById(id).get();
+        System.out.println(userEntity.isBanned());
+        if(userEntity.isBanned()==true){
+            userEntity.setBanned(false);
+        }
+        else
+            userEntity.setBanned(true);
+
+        this.userRepository.save(userEntity);
     }
 }
