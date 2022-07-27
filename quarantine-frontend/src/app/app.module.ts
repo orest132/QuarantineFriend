@@ -53,6 +53,10 @@ import { UserListComponent } from './components/user-list/user-list.component';
 import { RequestsComponent } from './components/requests/requests.component';
 import { ChatListComponent } from './components/chat-list/chat-list.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { EditComponent } from './components/edit/edit.component';
+import { EditPasswordComponent } from './components/edit-password/edit-password.component';
+import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
+import { ReportComponent } from './components/report/report.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +68,11 @@ import { ChatComponent } from './components/chat/chat.component';
     UserListComponent,
     RequestsComponent,
     ChatListComponent,
-    ChatComponent
+    ChatComponent,
+    EditComponent,
+    EditPasswordComponent,
+    ForgetPasswordComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,

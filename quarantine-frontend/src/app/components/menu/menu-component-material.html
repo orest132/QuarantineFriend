@@ -51,6 +51,14 @@
       ><mat-icon>person_outline</mat-icon>Suggestions
     </a>
 
+    <a
+      mat-button
+      *ngIf="userLoggedIn"
+      routerLink="/profile/{{userLoggedIn.username}}"
+      class="mat-button"
+      ><mat-icon>person_outline</mat-icon>Profile
+    </a>
+
     <span class="example-spacer"></span>
 
     <a

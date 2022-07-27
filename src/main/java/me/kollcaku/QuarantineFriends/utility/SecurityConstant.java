@@ -16,6 +16,6 @@ public class SecurityConstant {
     public static final String OPTIONS_HTTP_METHOD = "OPTIONS";
     public static final String REQUEST_MAPPING = "/api";
     public static final String ANGULAR_CROSS_ORIGIN = "http://localhost:4200";
-    public static final String[] PUBLIC_URLS = {"/api/hobby","/api/hobby/user/*", "/api/hobbies","/api/register","/api/login","/api/subscribe", "/swagger*/*", "/swagger-ui.html", "/v3/api-docs","/v3/api-docs/*"};
+    public static final String[] PUBLIC_URLS = {"/api/forget-password","/api/hobby","/api/hobby/user/*", "/api/hobbies","/api/register","/api/login","/api/subscribe", "/swagger*/*", "/swagger-ui.html", "/v3/api-docs","/v3/api-docs/*"};
     public static final String[] ONLY_ADMIN_URLS = {"/api/delete/**","/api/teams"};
 }

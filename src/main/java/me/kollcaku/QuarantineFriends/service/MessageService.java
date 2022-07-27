@@ -30,12 +30,15 @@ public class MessageService {
 
     public void postMessageToChat(Long id, MessageDTO message) {
         ChatEntity chat = this.chatRepository.findById(id).get();
-        System.out.println(message.getUser().getId()+"this is id");
-        List<MessageEntity> messages = chat.getMessages();
-        messages.add(mapToEntity(message));
-        chat.setMessages(messages);
-        this.subscribeService.sendEventToAll("sendMessage",message);
-        this.chatRepository.save(chat);
+        if(chat.getChatActiveByUser1()==null){
+            System.out.println(message.getUser().getId()+"this is id");
+            List<MessageEntity> messages = chat.getMessages();
+            messages.add(mapToEntity(message));
+            chat.setMessages(messages);
+            this.subscribeService.sendEventToAll("sendMessage",message);
+            this.chatRepository.save(chat);
+        }
+
     }
 
     public List<MessageDTO> getMessagesByChatId(Long id) {

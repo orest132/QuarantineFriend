@@ -2,8 +2,10 @@ package me.kollcaku.QuarantineFriends.service;
 
 import me.kollcaku.QuarantineFriends.dto.RequestDTO;
 import me.kollcaku.QuarantineFriends.dto.UserDTO;
+import me.kollcaku.QuarantineFriends.entity.MatchEntity;
 import me.kollcaku.QuarantineFriends.entity.RequestEntity;
 import me.kollcaku.QuarantineFriends.entity.UserEntity;
+import me.kollcaku.QuarantineFriends.repository.MatchRepository;
 import me.kollcaku.QuarantineFriends.repository.RequestRepository;
 import me.kollcaku.QuarantineFriends.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +16,18 @@ import java.util.List;
 
 @Service
 public class RequestService {
+    MatchRepository matchRepository;
     RequestRepository requestRepository;
     UserRepository userRepository;
 
     ChatService chatService;
 
     @Autowired
-    public RequestService(RequestRepository requestRepository, UserRepository userRepository, ChatService chatService) {
+    public RequestService(RequestRepository requestRepository, UserRepository userRepository, ChatService chatService, MatchRepository matchRepository) {
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
         this.chatService = chatService;
+        this.matchRepository = matchRepository;
     }
 
 
@@ -52,6 +56,10 @@ public class RequestService {
 
     public void deleteRequest(Long id) {
         RequestEntity requestEntity = this.requestRepository.findById(id).get();
+        MatchEntity match = new MatchEntity();
+        match.setUser1(requestEntity.getFrom_user());
+        match.setUser2(requestEntity.getTo_user());
+//        this.matchRepository.save(match);
         this.requestRepository.delete(requestEntity);
         this.chatService.addChat(requestEntity);
     }

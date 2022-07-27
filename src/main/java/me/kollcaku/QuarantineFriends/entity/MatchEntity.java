@@ -2,22 +2,24 @@ package me.kollcaku.QuarantineFriends.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.kollcaku.QuarantineFriends.dto.UserDTO;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "message")
+@Table(name = "matches")
 @Getter
 @Setter
-public class MessageEntity {
+public class MatchEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    private String message;
+    @OneToOne(cascade = CascadeType.ALL)
+    private UserEntity user1;
 
-    @OneToOne
-    private UserEntity user;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private  UserEntity user2;
+
+    private String report;
 }

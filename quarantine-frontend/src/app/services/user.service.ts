@@ -1,4 +1,4 @@
-import { Authority, Role, UserModel, RequestModel, Hobby } from '../model/userModel';
+import { Authority, Role, UserModel, RequestModel, Hobby, ReportModel } from '../model/userModel';
 import { EventEmitter, Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
@@ -29,6 +29,10 @@ export class UserService implements OnInit {
     // this.userLoggedIn.next(JSON.parse(localStorage.getItem('user')));
   }
 
+  report(report: ReportModel) {
+    return this.httpClient.post(`http://localhost:8080/api/report`,report);
+  }
+
   getUsersSorted(id:number, numberOfUsers: number){
     return this.httpClient.get<UserModel[]>(`http://localhost:8080/api/users/sorted/${id}/${numberOfUsers}`);
   }
@@ -48,6 +52,10 @@ export class UserService implements OnInit {
 
   addHobbyByUserId(hobbie: Hobby, id: number){
     return this.httpClient.post(`http://localhost:8080/api/hobby/user/${id}`, hobbie);
+  }
+
+  getUserByUsername(username:string){
+    return this.httpClient.get<UserModel>(`http://localhost:8080/api/user/${username}`);
   }
 
   addHobby(hobbie: Hobby){
@@ -71,7 +79,7 @@ export class UserService implements OnInit {
   }
 
   deleteUser(id: number) {
-    return this.httpClient.delete(`http://localhost:8080/api/delete/${id}`);
+    return this.httpClient.delete(`http://localhost:8080/api/user/delete/${id}`);
   }
 
   updateUser(user: UserModel): Observable<HttpResponse<UserModel>> {
@@ -115,6 +123,19 @@ export class UserService implements OnInit {
     localStorage.removeItem('token');
   }
 
+  public resetPassowrd(id: number, password: string) {
+    return this.httpClient.put(
+      `http://localhost:8080/api/reset-password/${id}`,
+      password
+    );
+  }
+
+  public forgetPassowrd(email: string) {
+    return this.httpClient.put(
+      `http://localhost:8080/api/forget-password`,
+      email
+    );
+  }
 }
 
 class RegisterModel{

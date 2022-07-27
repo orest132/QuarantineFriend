@@ -12,8 +12,11 @@ import me.kollcaku.QuarantineFriends.exception.UsernameExistException;
 import me.kollcaku.QuarantineFriends.repository.HobbyRepository;
 import me.kollcaku.QuarantineFriends.repository.UserRepository;
 import me.kollcaku.QuarantineFriends.utility.LoginResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,7 +44,12 @@ public class UserService {
 
     JwtUtils jwtUtils;
 
-    public UserService(ChatService chatService,PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleService userRoleService, AuthenticationManager authenticationManager, JwtUtils jwtUtils, HobbyRepository hobbyRepository) {
+
+    private JavaMailSender javaMailSender;
+
+
+    @Autowired
+    public UserService(ChatService chatService,PasswordEncoder passwordEncoder, UserRepository userRepository, UserRoleService userRoleService, AuthenticationManager authenticationManager, JwtUtils jwtUtils, HobbyRepository hobbyRepository,JavaMailSender javaMailSender) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
@@ -49,6 +57,7 @@ public class UserService {
         this.jwtUtils = jwtUtils;
         this.hobbyRepository = hobbyRepository;
         this.chatService = chatService;
+        this.javaMailSender = javaMailSender;
     }
 
     private String generatedPassword() {
@@ -259,5 +268,48 @@ public class UserService {
             return sortedUsers;
         else
             return sortedUsers.subList(0,usersToReturn);
+    }
+
+    public UserDTO getUserByUsername(String username) {
+        return mapToDto(this.userRepository.findUserByUsername(username));
+    }
+
+    public void resetPassword(Long id, String password){
+        UserEntity user = this.userRepository.findById(id).get();
+        user.setPassword(encodePassword(password));
+        this.userRepository.save(user);
+    }
+
+    public void deleteUserById(Long id) {
+        this.userRepository.deleteUserAssociatedHobbies(id);
+        this.userRepository.deleteUserAssociatedRequests(id);
+        this.userRepository.deleteFromMessageChat(id);
+        this.userRepository.deleteUserAssociatedChats(id);
+        this.userRepository.deleteUserAssociatedMessages(id);
+        this.userRepository.deleteById(id);
+    }
+
+    public void sendPassword(UserEntity user, String password){
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(user.getEmail());
+        mail.setFrom("portos-project@outlook.com");
+        mail.setSubject("Account was created for you");
+        mail.setText("Hi " + user.getFirstName() + " " + user.getLastName()  +
+                "!\n\nYour password has been reset  as per your request\n\n" +
+                "Login Credentials\n" +
+                "username: " + user.getUsername() +
+                "\npassword: " + password);
+
+        javaMailSender.send(mail);
+    }
+
+    public void forgetPassword(String email) {
+        UserEntity user = this.userRepository.findUserByEmail(email);
+        String password = this.generatedPassword();
+        System.out.println("Generated password is: "+password);
+        user.setPassword(password);
+        sendPassword(user, password);
+        this.userRepository.save(user);
+
     }
 }

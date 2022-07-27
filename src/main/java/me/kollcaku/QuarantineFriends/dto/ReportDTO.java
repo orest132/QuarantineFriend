@@ -4,15 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class ChatDTO {
+public class ReportDTO {
     private Long id;
-    private UserDTO user1;
-    private UserDTO user2;
-    private List<MessageDTO> messages;
-    private Long chatActiveByUser1;
+    private UserDTO reporter;
+    private UserDTO reportee;
+    private String report;
+
 }

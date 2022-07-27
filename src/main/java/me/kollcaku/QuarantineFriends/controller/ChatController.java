@@ -2,6 +2,7 @@ package me.kollcaku.QuarantineFriends.controller;
 
 import me.kollcaku.QuarantineFriends.dto.ChatDTO;
 import me.kollcaku.QuarantineFriends.dto.MessageDTO;
+import me.kollcaku.QuarantineFriends.entity.ChatEntity;
 import me.kollcaku.QuarantineFriends.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,11 @@ public class ChatController {
     public List<ChatDTO> getChatsByUserId(@PathVariable("id") Long id){
         System.out.println("visiting");
         return this.chatService.getChatsByUserId(id);
+    }
+
+    @PutMapping("/chat/block/{userBlockingId}")
+    public void blockUser(@RequestBody ChatDTO chat, @PathVariable("userBlockingId") Long id){
+        this.chatService.makeChatInactiveByUser(chat,id);
     }
 
     @GetMapping("/chat/{id}")

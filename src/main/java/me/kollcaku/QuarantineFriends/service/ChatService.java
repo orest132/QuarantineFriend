@@ -48,6 +48,7 @@ public class ChatService {
             if (chatEntity.getMessages() != null) {
                 chatDTO.setMessages(chatEntity.getMessages().stream().map(MessageService::mapToDto).collect(Collectors.toList()));
             }
+            chatDTO.setChatActiveByUser1(chatEntity.getChatActiveByUser1());
         }
         return chatDTO;
     }
@@ -61,6 +62,7 @@ public class ChatService {
             if (chatDTO.getMessages() != null) {
                 chatEntity.setMessages(chatDTO.getMessages().stream().map(MessageService::mapToEntity).collect(Collectors.toList()));
             }
+            chatEntity.setChatActiveByUser1(chatDTO.getChatActiveByUser1());
 
         }
         return chatEntity;
@@ -72,5 +74,22 @@ public class ChatService {
 
     public ChatDTO getChatById(Long id) {
         return mapToDto(this.chatRepository.findById(id).get());
+    }
+
+    public void makeChatInactiveByUser(ChatDTO chat, Long id) {
+        Long t = chat.getChatActiveByUser1();
+        ChatEntity chatEntity = mapToEntity(chat);
+        if(chat.getChatActiveByUser1()==null){
+            chatEntity.setChatActiveByUser1(id);
+
+        }
+        else if(t==id){
+            chatEntity.setChatActiveByUser1(null);
+        }
+        else{
+            return;
+        }
+        this.chatRepository.save(chatEntity);
+
     }
 }

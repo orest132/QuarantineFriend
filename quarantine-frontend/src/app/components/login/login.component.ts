@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from 'src/app/services/user.service';
+import { openEditPasswordDialog } from '../forget-password/forget-password.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +17,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit {
   constructor(
+    private dialog: MatDialog,
     private router: Router,
     // private userService: UserService,
     private authService: AuthService,
@@ -43,5 +46,9 @@ export class LoginComponent implements OnInit {
     this._snackBar.openFromComponent(AlertComponent, {
       duration: 2000,
     });
+  }
+
+  forgetPassword() {
+    openEditPasswordDialog(this.dialog).subscribe();
   }
 }

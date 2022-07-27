@@ -47,10 +47,30 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @GetMapping("/user/{username}")
+    public UserDTO getUserByUsername(@PathVariable("username") String username){
+        return this.userService.getUserByUsername(username);
+    }
+
     @GetMapping("/users/sorted/{userId}/{thisMany}")
     public ResponseEntity<List<UserDTO>> getUsersSorted(@PathVariable("userId") Long id, @PathVariable("thisMany") int usersToReturn){
         List<UserDTO> users = this.userService.getUsersSorted(id, usersToReturn);
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @PutMapping("/reset-password/{id}")
+    public void resetPassword(@PathVariable Long id,@RequestBody String password){
+        userService.resetPassword(id, password);
+    }
+
+    @PutMapping("/forget-password")
+    public void forgetPassword(@RequestBody String email){
+        userService.forgetPassword(email);
+    }
+
+    @DeleteMapping("/user/delete/{userId}")
+    public void deleteUserById(@PathVariable("userId") Long id){
+        this.userService.deleteUserById(id);
     }
 
     @PostMapping("/hobby")

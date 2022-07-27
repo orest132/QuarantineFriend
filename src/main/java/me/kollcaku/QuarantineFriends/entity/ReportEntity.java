@@ -2,22 +2,24 @@ package me.kollcaku.QuarantineFriends.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.kollcaku.QuarantineFriends.dto.UserDTO;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "message")
+@Table(name = "report")
 @Getter
 @Setter
-public class MessageEntity {
+public class ReportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    private String message;
+    @OneToOne()
+    private UserEntity reporter;
 
-    @OneToOne
-    private UserEntity user;
+    @ManyToOne()
+    private  UserEntity reportee;
+
+    private String report;
 }

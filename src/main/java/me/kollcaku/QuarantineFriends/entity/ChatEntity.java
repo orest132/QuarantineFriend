@@ -24,4 +24,6 @@ public class ChatEntity {
 
     @OneToMany(cascade = {CascadeType.ALL})
     private List<MessageEntity> messages;
+
+    private Long chatActiveByUser1;
 }

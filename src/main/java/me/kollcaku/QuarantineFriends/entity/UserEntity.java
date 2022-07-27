@@ -44,7 +44,7 @@ public class UserEntity {
 
     private String imageUrl;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     private List<HobbyEntity> hobbies;
 
     @Override

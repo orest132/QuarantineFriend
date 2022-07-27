@@ -30,6 +30,13 @@ export class UserModel {
     public to_user: UserModel;
   }
 
+  export class ReportModel {
+    public id: number;
+    public reporter: UserModel;
+    public reportee: UserModel;
+    public report: string;
+  }
+
   export class Message {
     public id: number;
     public message: string;
@@ -41,6 +48,7 @@ export class UserModel {
     public user1: UserModel;
     public user2: UserModel;
     public messages:Message[];
+    public chatActiveByUser1:number;
   }
 
   export class Hobby {
