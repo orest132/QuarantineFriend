@@ -286,6 +286,7 @@ public class UserService {
         this.userRepository.deleteFromMessageChat(id);
         this.userRepository.deleteUserAssociatedChats(id);
         this.userRepository.deleteUserAssociatedMessages(id);
+        this.userRepository.deleteAsocciatedReports(id);
         this.userRepository.deleteById(id);
     }
 

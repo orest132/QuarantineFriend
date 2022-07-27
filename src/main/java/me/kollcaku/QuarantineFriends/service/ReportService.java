@@ -53,4 +53,8 @@ public class ReportService {
     public List<ReportDTO> getReports() {
         return this.reportRepository.findAll().stream().map(ReportService::mapToDto).collect(Collectors.toList());
     }
+
+    public void deleteReport(Long id) {
+        this.reportRepository.deleteById(id);
+    }
 }

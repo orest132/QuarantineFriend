@@ -33,6 +33,14 @@ export class UserService implements OnInit {
     return this.httpClient.post(`http://localhost:8080/api/report`,report);
   }
 
+  getReports(){
+    return this.httpClient.get<ReportModel[]>(`http://localhost:8080/api/reports`);
+  }
+
+  deleteReport(id:number){
+    return this.httpClient.delete(`http://localhost:8080/api/report/delete/${id}`);
+  }
+
   getUsersSorted(id:number, numberOfUsers: number){
     return this.httpClient.get<UserModel[]>(`http://localhost:8080/api/users/sorted/${id}/${numberOfUsers}`);
   }

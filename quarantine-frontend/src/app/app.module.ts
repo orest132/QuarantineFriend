@@ -57,6 +57,7 @@ import { EditComponent } from './components/edit/edit.component';
 import { EditPasswordComponent } from './components/edit-password/edit-password.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { ReportComponent } from './components/report/report.component';
+import { ReportListComponent } from './components/report-list/report-list.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { ReportComponent } from './components/report/report.component';
     EditComponent,
     EditPasswordComponent,
     ForgetPasswordComponent,
-    ReportComponent
+    ReportComponent,
+    ReportListComponent
   ],
   imports: [
     BrowserModule,

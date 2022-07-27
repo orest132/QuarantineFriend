@@ -30,4 +30,9 @@ public class ReportController {
     public List<ReportDTO> getReports(){
         return this.reportService.getReports();
     }
+
+    @DeleteMapping("/report/delete/{reportId}")
+    public void deleteReport(@PathVariable("reportId") Long id){
+        this.reportService.deleteReport(id);
+    }
 }
