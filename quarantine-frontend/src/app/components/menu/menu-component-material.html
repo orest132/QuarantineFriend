@@ -53,6 +53,14 @@
 
     <a
       mat-button
+      *ngIf="userLoggedIn?.id==1"
+      (click)="downloadCsv()"
+      class="mat-button"
+      ><mat-icon>person_outline</mat-icon>Download Report
+    </a>
+
+    <a
+      mat-button
       *ngIf="userLoggedIn"
       routerLink="/profile/{{userLoggedIn.username}}"
       class="mat-button"
@@ -63,7 +71,7 @@
 
     <a
       mat-button
-      routerLink="/register"
+      (click)="goToRegister()"
       class="mat-button"
       *ngIf="!userLoggedIn"
       matSuffix

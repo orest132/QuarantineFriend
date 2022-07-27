@@ -1,6 +1,7 @@
 package me.kollcaku.QuarantineFriends.service;
 
 import me.kollcaku.QuarantineFriends.configuration.JwtUtils;
+import me.kollcaku.QuarantineFriends.dto.HobbyReportRowDTO;
 import me.kollcaku.QuarantineFriends.dto.UserDTO;
 import me.kollcaku.QuarantineFriends.dto.UserRoleDTO;
 import me.kollcaku.QuarantineFriends.entity.HobbyEntity;
@@ -328,5 +329,18 @@ public class UserService {
             userEntity.setBanned(true);
 
         this.userRepository.save(userEntity);
+    }
+
+    public List<HobbyReportRowDTO> getHobbieReport() {
+        List<HobbyReportRowDTO> hobbyReportRowDTOList = new ArrayList<>();
+        int[] counts = this.userRepository.hobbiesCount();
+        int[] hobbiesId = this.userRepository.hobbiesId();
+        for(int i= 0; i<counts.length;i++){
+            HobbyReportRowDTO hobbyReportRowDTO = new HobbyReportRowDTO();
+            hobbyReportRowDTO.setHobby(this.hobbyRepository.findById(Integer.toUnsignedLong(hobbiesId[i])).get().getHobby());
+            hobbyReportRowDTO.setCount(Integer.toUnsignedLong(counts[i]));
+            hobbyReportRowDTOList.add(hobbyReportRowDTO);
+        }
+        return hobbyReportRowDTOList;
     }
 }

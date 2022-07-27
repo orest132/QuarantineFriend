@@ -45,6 +45,10 @@ export class UserService implements OnInit {
     return this.httpClient.put(`http://localhost:8080/api/user/ban/${id}`,"");
   }
 
+  getHobbiesReport(){
+    return this.httpClient.get(`http://localhost:8080/api/hobbies/report`);
+  }
+
   getUsersSorted(id:number, numberOfUsers: number){
     return this.httpClient.get<UserModel[]>(`http://localhost:8080/api/users/sorted/${id}/${numberOfUsers}`);
   }

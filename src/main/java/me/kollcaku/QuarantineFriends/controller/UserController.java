@@ -1,5 +1,6 @@
 package me.kollcaku.QuarantineFriends.controller;
 
+import me.kollcaku.QuarantineFriends.dto.HobbyReportRowDTO;
 import me.kollcaku.QuarantineFriends.dto.UserDTO;
 import me.kollcaku.QuarantineFriends.entity.HobbyEntity;
 import me.kollcaku.QuarantineFriends.entity.RegisterModel;
@@ -92,5 +93,10 @@ public class UserController {
     @GetMapping("/hobbies")
     public List<HobbyEntity> getAllHobbies(){
         return this.userService.getAllHobbies();
+    }
+
+    @GetMapping("/hobbies/report")
+    public List<HobbyReportRowDTO> getHobbiesReport(){
+        return this.userService.getHobbieReport();
     }
 }

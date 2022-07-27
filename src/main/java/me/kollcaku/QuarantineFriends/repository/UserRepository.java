@@ -37,6 +37,11 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "delete from report r where r.reportee_id=:id", nativeQuery = true)
     void deleteAsocciatedReports(Long id);
 
+    @Query(value = "select count(user_entity_id) from user_hobbies group by hobbies_id", nativeQuery = true)
+    int[] hobbiesCount();
+    @Query(value = "select user_hobbies.hobbies_id from user_hobbies group by hobbies_id", nativeQuery = true)
+    int[] hobbiesId();
+
     @Modifying
     @Query(value = "delete from chat_messages m where m.messages_id=any(select id from message mm where mm.user_id=:id)", nativeQuery = true)
     void deleteFromMessageChat(Long id);
