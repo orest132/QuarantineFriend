@@ -90,7 +90,6 @@ export class UserService implements OnInit {
   }
 
   sendRequest(request: RequestModel) {
-    console.log("inside service");
     return this.httpClient.post(`http://localhost:8080/api/request/send`, request).subscribe();
   }
 

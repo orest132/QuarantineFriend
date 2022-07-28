@@ -49,7 +49,6 @@ export class MenuComponent implements OnInit {
         ]
       ) => {
         this.reportRows = response;
-        console.log(response+"kjo esh");
       }
     ); 
   }
@@ -84,11 +83,6 @@ export class MenuComponent implements OnInit {
     this.router.navigate(['/login']);
     this.userService.userLoggedIn.next(null);
     this.userService.userRole.next(null);
-  }
-  onClickProfile() {
-    console.log('inside on click profile');
-    // this.router.navigate[`/edit`];
-    this.router.navigateByUrl(`/edit/${this.userLoggedIn.id}`);
   }
 
   goToRegister(){

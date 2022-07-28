@@ -45,7 +45,6 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getUsers(){
         List<UserDTO> users = this.userService.getUsers();
-        System.out.println(users.get(0).isBanned());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 

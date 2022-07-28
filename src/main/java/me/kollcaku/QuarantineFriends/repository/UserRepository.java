@@ -1,5 +1,6 @@
 package me.kollcaku.QuarantineFriends.repository;
 
+import me.kollcaku.QuarantineFriends.entity.MessageEntity;
 import me.kollcaku.QuarantineFriends.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -43,7 +45,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     int[] hobbiesId();
 
     @Modifying
-    @Query(value = "delete from chat_messages m where m.messages_id=any(select id from message mm where mm.user_id=:id)", nativeQuery = true)
+    @Query(value = "delete from quarantine.chat_messages m where m.chat_entity_id=any(select id from quarantine.chat where user1_id=:id or user2_id=:id)", nativeQuery = true)
     void deleteFromMessageChat(Long id);
 
 

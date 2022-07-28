@@ -22,7 +22,7 @@ public class ChatEntity {
     @ManyToOne
     private UserEntity user2;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MessageEntity> messages;
 
     private Long chatActiveByUser1;

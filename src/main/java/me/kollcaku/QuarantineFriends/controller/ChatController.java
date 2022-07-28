@@ -25,7 +25,6 @@ public class ChatController {
 
     @GetMapping("/chat/user/{id}")
     public List<ChatDTO> getChatsByUserId(@PathVariable("id") Long id){
-        System.out.println("visiting");
         return this.chatService.getChatsByUserId(id);
     }
 

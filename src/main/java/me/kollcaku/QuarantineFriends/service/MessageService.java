@@ -31,7 +31,6 @@ public class MessageService {
     public void postMessageToChat(Long id, MessageDTO message) {
         ChatEntity chat = this.chatRepository.findById(id).get();
         if(chat.getChatActiveByUser1()==null){
-            System.out.println(message.getUser().getId()+"this is id");
             List<MessageEntity> messages = chat.getMessages();
             messages.add(mapToEntity(message));
             chat.setMessages(messages);

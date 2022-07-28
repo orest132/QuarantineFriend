@@ -84,10 +84,6 @@ public class UserService {
 
     public UserDTO register(String firstName, String lastName, String username, String email, Long age, String password, UserRoleDTO role, List<HobbyEntity> hobbies) throws UserNotFoundException, EmailExistException, UsernameExistException {
         validateUsernameAndEmail(username, email);
-//        if (password == null){
-//            password = generatedPassword();
-//        }
-        System.out.println(age);
 
         UserDTO user = new UserDTO();
         user.setUserId(generateUsedId());
@@ -111,7 +107,6 @@ public class UserService {
         user.setRole(userRole);
 
         UserEntity userEntity = mapToEntity(user);
-        System.out.println(age);
 
         userEntity.setPassword(encodedPassword);
         userEntity.setHobbies(null);
@@ -123,6 +118,7 @@ public class UserService {
 
     public ResponseEntity<LoginResponse> login(SignInModel signInModel) {
         Authentication authentication = authenticationManager.authenticate(
+
                 new UsernamePasswordAuthenticationToken(signInModel.getUsername(), signInModel.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -130,9 +126,17 @@ public class UserService {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("jwtToken", jwt);
         LoginResponse loginResponse = new LoginResponse(user, jwt);
-        return ResponseEntity.ok()
-                .headers(responseHeaders)
-                .body(loginResponse);
+        if(user.isBanned()==true){
+            return ResponseEntity.badRequest()
+                    .headers(responseHeaders)
+                    .body(loginResponse);
+        }
+        else{
+            return ResponseEntity.ok()
+                    .headers(responseHeaders)
+                    .body(loginResponse);
+        }
+
     }
 
     public List<UserDTO> getUsers() {
@@ -265,8 +269,6 @@ public class UserService {
 
         for (Map.Entry<UserEntity, Integer> en : hm1.entrySet()) {
             sortedUsers.add(mapToDto(en.getKey()));
-            System.out.println("Key = " + en.getKey().getUsername() +
-                    ", Value = " + en.getValue());
         }
         if(sortedUsers.size()<usersToReturn)
             return sortedUsers;
@@ -321,7 +323,6 @@ public class UserService {
     public void banUser(Long id) {
 
         UserEntity userEntity = this.userRepository.findById(id).get();
-        System.out.println(userEntity.isBanned());
         if(userEntity.isBanned()==true){
             userEntity.setBanned(false);
         }

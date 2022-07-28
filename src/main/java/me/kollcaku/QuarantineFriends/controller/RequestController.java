@@ -24,14 +24,9 @@ public class RequestController {
 
     @PostMapping("/request/send")
     public void sendRequest(@RequestBody RequestDTO request){
-        System.out.println(request.getFrom_user().toString());
         this.requestService.sendRequest(request);
     }
 
-//    @GetMapping("/kot")
-//    public void test(){
-//        System.out.println("smth");
-//    }
 
     @GetMapping("/request/all/{userId}")
     public List<RequestDTO> getAllRequests(@PathVariable("userId") Long id){
