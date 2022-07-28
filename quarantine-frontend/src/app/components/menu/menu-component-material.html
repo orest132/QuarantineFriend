@@ -54,6 +54,14 @@
     <a
       mat-button
       *ngIf="userLoggedIn?.id==1"
+      routerLink="/reports"
+      class="mat-button"
+      ><mat-icon>person_outline</mat-icon>Reports
+    </a>
+
+    <a
+      mat-button
+      *ngIf="userLoggedIn?.id==1"
       (click)="downloadCsv()"
       class="mat-button"
       ><mat-icon>person_outline</mat-icon>Download Report

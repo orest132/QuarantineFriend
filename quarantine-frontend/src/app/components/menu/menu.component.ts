@@ -87,8 +87,5 @@ export class MenuComponent implements OnInit {
 
   goToRegister(){
     this.router.navigate(['/register'])
-  .then(() => {
-    window.location.reload();
-  });
   }
 }

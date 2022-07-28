@@ -125,7 +125,7 @@ public class UserService {
         UserEntity user = this.userRepository.findUserByUsername(signInModel.getUsername());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("jwtToken", jwt);
-        LoginResponse loginResponse = new LoginResponse(user, jwt);
+        LoginResponse loginResponse = new LoginResponse(mapToDto(user), jwt);
         if(user.isBanned()==true){
             return ResponseEntity.badRequest()
                     .headers(responseHeaders)
