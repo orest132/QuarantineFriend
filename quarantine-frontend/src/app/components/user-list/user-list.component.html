@@ -1,0 +1,105 @@
+<div class="div mt-5">
+  <h5>List of Users</h5>
+  <hr />
+</div>
+
+<div class="container">
+  <div
+    class="spinner-container d-flex justify-content-center mt-5"
+    *ngIf="loading"
+  >
+    <mat-spinner></mat-spinner>
+  </div>
+  <table
+    mat-table
+    class="mat-elevation-z5 users-table"
+    [dataSource]="users"
+    *ngIf="!loading"
+    matSort
+  >
+    <ng-container matColumnDef="Select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          [checked]="isAllSelected()"
+          (change)="toggleAll()"
+        ></mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let user">
+        <mat-checkbox (change)="onUserToggled(user)"></mat-checkbox>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Avatar">
+      <th mat-header-cell *matHeaderCellDef>Avatar</th>
+      <td mat-cell *matCellDef="let user">
+        <img src="{{ user.imageUrl }}" class="rounded-circle" />
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="First Name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+      <td mat-cell *matCellDef="let user">{{ user.firstName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Last Name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+      <td mat-cell *matCellDef="let user">{{ user.lastName }}</td>
+    </ng-container>
+    <ng-container matColumnDef="Age">
+      <th mat-header-cell *matHeaderCellDef>Age</th>
+      <td mat-cell *matCellDef="let user">{{ user.age }}</td>
+    </ng-container>
+    <ng-container matColumnDef="expandedDetail">
+      <th mat-header-cell *matHeaderCellDef>Username</th>
+      <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+    </ng-container>
+    <ng-container matColumnDef="Send Request">
+      <th mat-header-cell *matHeaderCellDef>Send Request</th>
+      <td mat-cell *matCellDef="let user">
+        <button
+          mat-icon-button
+          class="edit-icon"
+          aria-label="Example icon button with a home icon"
+          (click)="sendRequest(user)"
+        >
+          <mat-icon>check</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="Delete" *ngIf="userLoggedIn.id==1">
+      <th mat-header-cell *matHeaderCellDef>Delete</th>
+      <td mat-cell *matCellDef="let user">
+        <button
+          mat-icon-button
+          class="edit-icon"
+          aria-label="Example icon button with a home icon"
+          (click)="deleteUser(user)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="Ban" *ngIf="userLoggedIn.id==1">
+      <th mat-header-cell *matHeaderCellDef>Ban/Unban user</th>
+      <td mat-cell *matCellDef="let user">
+        <button
+          mat-icon-button
+          class="edit-icon"
+          aria-label="Example icon button with a home icon"
+          (click)="banUser(user.id)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="isBanned">
+      <th mat-header-cell *matHeaderCellDef>Is Banned?</th>
+      <td mat-cell *matCellDef="let user">
+          <ng-template #other>No</ng-template>
+        <div *ngIf="user.banned==true; else other">Yes</div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let user; columns: displayColumns"></tr>
+  </table>
+  <button *ngIf="userLoggedIn?.id!=1" class="btn" (click)="more()">More</button>
+</div>

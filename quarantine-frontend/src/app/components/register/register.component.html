@@ -1,0 +1,142 @@
+<div class="mt-5 justify-content-center">
+    <form [formGroup]="userFormGroup" (submit)="onSubmit()">
+      <div class="form-area" formGroupName="user">
+        <h3>Add User</h3>
+        <div class="row form-group mt-3">
+          <!-- <div class="col-sm-2">
+            <label for="firstName"></label>
+          </div> -->
+          <div class="col-sm-12">
+            <div class="input-space">
+              <input
+                type="text"
+                formControlName="firstName"
+                class="form-control col-sm-12"
+                placeholder="First Name"
+              />
+            </div>
+          </div>
+        </div>
+  
+        <div class="row form-group mt-2">
+          <!-- <div class="col-sm-2">
+            <label for="lastName"></label>
+          </div> -->
+          <div class="col-sm-12">
+            <div class="input-space">
+              <input
+                type="text"
+                formControlName="lastName"
+                class="form-control col-sm-12"
+                placeholder="Last Name"
+              />
+            </div>
+          </div>
+        </div>
+  
+        <div class="row form-group mt-2">
+          <!-- <div class="col-sm-2">
+            <label for="email"></label>
+          </div> -->
+          <div class="col-sm-12">
+            <div class="input-space form-group">
+              <input
+                type="text"
+                formControlName="email"
+                class="form-control col-sm-12"
+                placeholder="Email"
+              />
+            </div>
+          </div>
+        </div>
+  
+        <div class="row form-group mt-3">
+          <!-- <div class="col-sm-2">
+            <label for="firstName"></label>
+          </div> -->
+          <div class="col-sm-12">
+            <div class="input-space">
+              <input
+                type="text"
+                formControlName="username"
+                class="form-control col-sm-12"
+                placeholder="Username"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row form-group mt-3">
+          <!-- <div class="col-sm-2">
+            <label for="firstName"></label>
+          </div> -->
+          <div class="col-sm-12">
+            <div class="input-space">
+              <input
+                type="number"
+                formControlName="age"
+                class="form-control col-sm-12"
+                placeholder="age"
+              />
+            </div>
+          </div>
+        </div>
+
+        
+        
+        <div class="row form-group mt-2">
+          <!-- <div class="col-sm-2">
+            <label for="email"></label>
+          </div> -->
+          <div class="col-sm-12">
+            <div class="input-space">
+              <input
+                [type]="hide ? 'password' : 'text'"
+                formControlName="password"
+                class="form-control"
+                placeholder="Password"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row form-group mt-2">
+            <!-- <div class="col-sm-2">
+              <label for="email"></label>
+            </div> -->
+            <div class="col-sm-12">
+              <div class="input-space">
+                <input
+                  [type]="hide ? 'password' : 'text'"
+                  formControlName="confirmPassword"
+                  class="form-control"
+                  placeholder="Confirm Password"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row form-group mt-3">
+            
+            <div class="col-sm-12">
+              <div class="input-space">
+                <select class="form-control" multiple title="Hobbies" formControlName="hobbies">
+                  <option *ngFor="let hobby of hobbies" value="{{hobby.id}}">{{hobby.hobby}}</option>
+                </select>
+                <br>
+                <input placeholder="This and the button below only serve to add hobbies" class="form-control" #input>
+                <button type="button" class="btn" style="width: 50px;" (click)="clicked()">Add</button>
+              </div>
+            </div>
+          </div>
+        <button
+          type="submit"
+          class="btn col-12 btn-block btn-outline-primary mt-3"
+        >
+        Add
+        </button>
+      </div>
+    </form>
+    
+  </div>
+  

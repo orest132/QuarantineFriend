@@ -1,0 +1,107 @@
+<div class="div mt-5">
+    <h5>List of Users</h5>
+    <hr />
+  </div>
+  
+  <div class="container">
+    <table
+      mat-table
+      class="mat-elevation-z5 users-table"
+      [dataSource]="reports"
+      matSort
+    >
+      <ng-container matColumnDef="Select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            [checked]="isAllSelected()"
+            (change)="toggleAll()"
+          ></mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let user">
+          <mat-checkbox (change)="onUserToggled(user)"></mat-checkbox>
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="Avatar">
+        <th mat-header-cell *matHeaderCellDef>Avatar</th>
+        <td mat-cell *matCellDef="let report">
+          <img src="{{ report.reporter.imageUrl }}" class="rounded-circle" />
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Reporter">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Reporter</th>
+        <td mat-cell *matCellDef="let report">{{ report.reporter.username }}</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="Reportee">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Reportee</th>
+        <td mat-cell *matCellDef="let report">{{ report.reportee.username }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Delete">
+        <th mat-header-cell *matHeaderCellDef>Delete Report</th>
+        <td mat-cell *matCellDef="let report">
+          <button
+            mat-icon-button
+            class="edit-icon"
+            aria-label="Example icon button with a home icon"
+            (click)="deleteReport(report.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Ban">
+        <th mat-header-cell *matHeaderCellDef>Ban/Unban Reportee</th>
+        <td mat-cell *matCellDef="let report">
+          <button
+            mat-icon-button
+            class="edit-icon"
+            aria-label="Example icon button with a home icon"
+            (click)="banReportee(report.reportee.id); deleteReport(report.id);"
+          >
+            <mat-icon>check</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="isBanned">
+        <th mat-header-cell *matHeaderCellDef>Is Banned?</th>
+        <td mat-cell *matCellDef="let report">
+            <ng-template #other>No</ng-template>
+          <div *ngIf="report.reportee.banned;else other">Yes</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Delete Reportee">
+        <th mat-header-cell *matHeaderCellDef>Delete Reportee</th>
+        <td mat-cell *matCellDef="let report">
+          <button
+            mat-icon-button
+            class="edit-icon"
+            aria-label="Example icon button with a home icon"
+            (click)="deleteReportee(report.reportee.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="View Report">
+        <th mat-header-cell *matHeaderCellDef>View Report</th>
+        <td mat-cell *matCellDef="let report">
+          <button
+            mat-icon-button
+            class="edit-icon"
+            aria-label="Example icon button with a home icon"
+            (click)="showReport(report)"
+          >
+            <mat-icon>check</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+      <tr mat-row *matRowDef="let user; columns: displayColumns"></tr>
+    </table>
+    <br>
+    <br>
+    <p #reportContent style="font-size: 25px; width: 100%; word-break: break-all;"></p>
+  </div>
+  

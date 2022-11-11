@@ -1,0 +1,75 @@
+<div class="container">
+    <table
+      mat-table
+      [dataSource]="chats"
+      class="mat-elevation-z5 notifications-table"
+      matSort
+    >
+      <ng-container matColumnDef="FirstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>FirstName</th>
+        <td mat-cell *matCellDef="let chat"><ng-template #other><div> {{chat.user2.firstName}} </div></ng-template> <div *ngIf="userLoggedIn.id!=chat.user1.id;else other"> {{chat.user1.firstName}} </div>
+         </td>
+      </ng-container>
+      <ng-container matColumnDef="LastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>LastName</th>
+        <td mat-cell *matCellDef="let chat"> <ng-template #other><div> {{chat.user2.lastName}} </div></ng-template> <div *ngIf="userLoggedIn.id!=chat.user1.id;else other"> {{chat.user1.lastName}} </div>
+         </td>
+      </ng-container>
+      <ng-container matColumnDef="UserName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>UserName</th>
+        <td mat-cell *matCellDef="let chat"> <ng-template #other><div> {{chat.user2.username}} </div></ng-template> <div *ngIf="userLoggedIn.id!=chat.user1.id;else other"> {{chat.user1.username}} </div>
+         </td>
+      </ng-container>
+      <ng-container matColumnDef="Open chat">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Open chat</th>
+        <td mat-cell *matCellDef="let chat">
+          <button
+            mat-icon-button
+            class="edit-icon"
+            routerLink="/chat/{{ chat?.id }}"
+            aria-label="Example icon button with home button"
+            >
+            
+            <mat-icon>check</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Report">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Report</th>
+        <td mat-cell *matCellDef="let chat">
+          <button
+            mat-icon-button
+            class="edit-icon"
+            routerLink="/report/{{ chat?.id }}"
+            aria-label="Example icon button with home button"
+            >
+            
+            <mat-icon>check</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Block user/chat">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Block/unblock user/chat</th>
+        <td mat-cell *matCellDef="let chat">
+          <button
+            mat-icon-button
+            class="edit-icon"
+            (click)="blockChat(chat, userLoggedIn.id)"
+            aria-label="Example icon button with home button"
+            >
+            
+            <mat-icon>check</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="Is blocked?">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Is blocked?</th>
+        <td mat-cell *matCellDef="let chat">
+          <ng-template #other>No</ng-template>
+          <div *ngIf="chat.chatActiveByUser1!=null;else other">Yes</div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+      <tr mat-row *matRowDef="let request columns: displayColumns"></tr>
+    </table>
+  </div>

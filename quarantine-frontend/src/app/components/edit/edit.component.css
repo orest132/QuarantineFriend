@@ -1,0 +1,21 @@
+body {
+  margin-top: 20px;
+  background: #f8f8f8;
+}
+
+img {
+  height: 140px;
+  width: 140px;
+}
+button-password {
+  margin-left: 200px;
+}
+button {
+  background-color: #3f51b5;
+  color: white;
+}
+
+button:hover {
+  background-color: #0327f2;
+  color: aliceblue;
+}
